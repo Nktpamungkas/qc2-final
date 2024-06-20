@@ -290,23 +290,54 @@ $dtFin = mysqli_fetch_assoc($qryFin);
 						<input name="mc" type="text" class="form-control" id="mc"
 							value="<?php echo $dtFin['no_mesin']; ?>" placeholder="Mesin">
 					</div>
+					<?php 
+						
+						$sqlSpeed = "SELECT DISTINCT
+											OPERATIONCODE,
+											TRIM(CHARACTERISTICCODE) AS CHARACTERISTICCODE,
+											LONGDESCRIPTION,
+											VALUEQUANTITY,
+											LINE
+										FROM
+											ITXVIEW_DETAIL_QA_DATA
+										WHERE
+											PRODUCTIONORDERCODE = '$dtFin[nokk]'
+											AND PRODUCTIONDEMANDCODE = '$dtFin[demandno]'
+											AND TRIM(CHARACTERISTICCODE) = 'SPEEDFIN'
+											AND TRIM(OPERATIONCODE) = '$dtFin[nama_mesin]'
+										ORDER BY
+											LINE ASC";
+						$stmtSpeed=db2_exec($conn1,$sqlSpeed, array('cursor'=>DB2_SCROLLABLE));
+						$rowSpeed = db2_fetch_assoc($stmtSpeed);
+					?>
 					<div class="col-sm-3">
 						<div class="input-group">
-							<input name="speed" type="text" class="form-control" id="speed" value="<?php if ($dtFin['speed'] != "") {
-								echo $dtFin['speed'];
-							} else {
-								echo round($rowSpeed['VALUEQUANTITY']);
-							} ?>" placeholder="0.00" style="text-align: right;">
+							<input name="speed" type="text" class="form-control" id="speed" value="<?php echo number_format($rowSpeed['VALUEQUANTITY']); ?>" placeholder="0.00" style="text-align: right;">
 							<span class="input-group-addon">speed</span>
 						</div>
 					</div>
+					<?php
+						$sqlSuhu = "SELECT DISTINCT
+										OPERATIONCODE,
+										TRIM(CHARACTERISTICCODE) AS CHARACTERISTICCODE,
+										LONGDESCRIPTION,
+										VALUEQUANTITY,
+										LINE
+									FROM
+										ITXVIEW_DETAIL_QA_DATA
+									WHERE
+										PRODUCTIONORDERCODE = '$dtFin[nokk]'
+										AND PRODUCTIONDEMANDCODE = '$dtFin[demandno]'
+										AND TRIM(CHARACTERISTICCODE) = 'TMP'
+										AND TRIM(OPERATIONCODE) = '$dtFin[nama_mesin]'
+									ORDER BY
+										LINE ASC";
+						$stmtSuhu=db2_exec($conn1,$sqlSuhu, array('cursor'=>DB2_SCROLLABLE));
+						$rowSuhu = db2_fetch_assoc($stmtSuhu);
+					?>
 					<div class="col-sm-3">
 						<div class="input-group">
-							<input name="suhu" type="text" class="form-control" id="suhu" value="<?php if ($dtFin['suhu'] != "") {
-								echo $dtFin['suhu'];
-							} else {
-								echo round($rowSuhu['VALUEQUANTITY']);
-							} ?>" placeholder="0.00" style="text-align: right;">
+							<input name="suhu" type="text" class="form-control" id="suhu" value="<?php echo number_format($rowSuhu['VALUEQUANTITY']); ?>" placeholder="0.00" style="text-align: right;">
 							<span class="input-group-addon">&deg;</span>
 						</div>
 					</div>
