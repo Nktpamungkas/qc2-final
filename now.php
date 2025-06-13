@@ -22,7 +22,8 @@ $sql_ITXVIEWKK = db2_exec($conn1, "SELECT
                                         FROM 
                                         ITXVIEWKK 
                                         WHERE 
-                                        DEAMAND = '$nodemand'");
+                                        DEAMAND = '$nodemand'
+                                        ORDER BY CREATIONDATETIME DESC");
 $dt_ITXVIEWKK = db2_fetch_assoc($sql_ITXVIEWKK);
 
 $sql_pelanggan_buyer = db2_exec($conn1, "SELECT TRIM(LANGGANAN) AS PELANGGAN, TRIM(BUYER) AS BUYER FROM ITXVIEW_PELANGGAN 
