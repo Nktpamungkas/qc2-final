@@ -45,6 +45,7 @@ $Data .="\n";
 fwrite($handle, $Data);
 fclose($handle);
 //copy($file, "//".$ip."/EPSON LQ-2190 ESCP2");
+//copy($file, "//W-QCF-000149/EPSON LX-310 ESCP");
 copy($file, "//W-QCF-000149/EPSON LX-310 ESCP");
 unlink($file);
 //W-QCF-000149/EPSON LX-310 ESCP
