@@ -41,9 +41,26 @@ $TglMasuk = isset($_POST['tglmsk']) ? $_POST['tglmsk'] : '';
 $Item = isset($_POST['item']) ? $_POST['item'] : '';
 $Warna = isset($_POST['warna']) ? $_POST['warna'] : '';
 $Langganan = isset($_POST['langganan']) ? $_POST['langganan'] : '';
-$con1 = mysqli_connect("10.0.0.10", "dit", "4dm1n", "db_finishing");
-$qryFin = mysqli_query($con1, "SELECT *,DATE_FORMAT(tgl_proses_out,'%d-%m-%Y') as tgl_o FROM tbl_produksi WHERE demandno='$nodemand' ORDER BY id DESC LIMIT 1");
-$dtFin = mysqli_fetch_assoc($qryFin);
+
+$hostSVR19     = "10.0.0.221";
+$finishing     = "db_finishing";
+$usernameSVR19 = "sa";
+$passwordSVR19 = "Ind@taichen2024";
+$db_finishing = ["Database" => $finishing, "UID" => $usernameSVR19, "PWD" => $passwordSVR19];
+$con1 = sqlsrv_connect($hostSVR19, $db_finishing);
+
+
+$qryFin = sqlsrv_query($con1, "SELECT
+									*,
+									FORMAT(tgl_proses_out, 'dd-MM-yyyy') AS tgl_o
+								FROM
+									db_finishing.tbl_produksi 
+								WHERE
+									demandno = '$nodemand' 
+								ORDER BY
+									id DESC 
+								OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY");
+$dtFin = sqlsrv_fetch_array($qryFin, SQLSRV_FETCH_ASSOC);
 ?>
 <form class="form-horizontal" action="pages/detail_cetak_erp.php" method="post" enctype="multipart/form-data"
 	name="form1">
